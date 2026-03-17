@@ -1,6 +1,7 @@
 import { createUploadthing, type FileRouter } from "uploadthing/express";
 import { verifyToken } from "../../utils/auth";
 import { query } from "../../config/db";
+import { z } from "zod";
 
 const f = createUploadthing();
 
@@ -11,27 +12,44 @@ export const screenshotUploadRouter = {
       maxFileCount: 1,
     },
   })
-    .middleware(async ({ req }) => {
+    .input(
+      z.object({
+        title: z.string().optional(),
+        tags: z.string().optional(),
+      }),
+    )
+    .middleware(async ({ req, input }) => {
       const token = req.headers.authorization?.split(" ")[1];
       if (!token) throw new Error("Unauthorized");
 
       const userId = verifyToken(token);
       if (!userId) throw new Error("Invalid token");
 
-      return { userId };
+      console.log("Middleware successfully verified user:", userId);
+      return {
+        userId: Number(userId),
+        title: input.title,
+        tags: input.tags,
+      };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log("Upload complete for userId:", metadata.userId);
+      console.log(">>> UPLOAD COMPLETE CALLBACK TRIGGERED <<<");
+      console.log("Saving for UserID:", metadata.userId);
+      console.log("Title:", metadata.title);
       console.log("File URL:", file.ufsUrl);
 
       try {
-        await query(
-          "INSERT INTO screenshots (user_id, filename, title) VALUES ($1, $2, $3)",
-          [metadata.userId, file.ufsUrl, file.name]
+        const finalTitle = metadata.title || file.name;
+        // TODO: can parse metadata.tags here
+
+        const res = await query(
+          "INSERT INTO screenshots (user_id, filename, title) VALUES ($1, $2, $3) RETURNING *",
+          [metadata.userId, file.ufsUrl, finalTitle],
         );
-        console.log("Screenshot record saved to DB");
+
+        console.log("DATABASE SUCCESS: Saved row ID:", res.rows[0].id);
       } catch (error) {
-        console.error("Failed to save screenshot to DB:", error);
+        console.error("DATABASE ERROR in onUploadComplete:", error);
       }
     }),
 } satisfies FileRouter;
