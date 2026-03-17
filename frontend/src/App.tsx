@@ -1,5 +1,36 @@
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router";
+import Login from "./pages/Login";
+import Screenshots from "./pages/Screenshots";
+
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+  return <>{children}</>;
+};
+
+const router = createBrowserRouter([
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/screenshots",
+    element: (
+      <ProtectedRoute>
+        <Screenshots />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/",
+    element: <Navigate to="/screenshots" replace />,
+  },
+]);
+
 const App = () => {
-  return <div className="bg-amber-400">App</div>;
+  return <RouterProvider router={router} />;
 };
 
 export default App;
