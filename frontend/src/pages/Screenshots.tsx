@@ -100,6 +100,15 @@ const Screenshots = () => {
     }
   };
 
+  const onRemoveTag = async (screenshotId: number, tagName: string) => {
+    try {
+      await api.delete(`/screenshots/${screenshotId}/tags/${tagName}`);
+      fetchScreenshots();
+    } catch (err) {
+      alert("Failed to remove tag");
+    }
+  };
+
   return (
     <div className="flex h-screen">
       {/* SideMenu */}
@@ -235,9 +244,18 @@ const Screenshots = () => {
                           item.tags.split(",").map((tag, idx) => (
                             <span
                               key={idx}
-                              className="bg-zinc-100 text-zinc-700 px-3 py-1 rounded-md text-xs font-medium border border-zinc-200"
+                              className="flex items-center gap-1.5 bg-zinc-100 text-zinc-700 px-3 py-1 rounded-md text-xs font-medium border border-zinc-200"
                             >
                               {tag.trim()}
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  onRemoveTag(item.id, tag.trim());
+                                }}
+                                className="p-0.5 rounded-full hover:bg-zinc-200 text-zinc-400 hover:text-red-500 transition-colors cursor-pointer"
+                              >
+                                <X size={12} />
+                              </button>
                             </span>
                           ))
                         ) : (

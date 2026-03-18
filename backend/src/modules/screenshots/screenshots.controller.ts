@@ -72,6 +72,31 @@ export const createScreenshot = async (req: AuthRequest, res: Response) => {
   }
 };
 
+export const removeTag = async (req: AuthRequest, res: Response) => {
+  const { id, tagName } = req.params;
+  try {
+    // Get tag ID
+    const tagRes = await query("SELECT id FROM tags WHERE name = $1", [
+      tagName,
+    ]);
+    if (tagRes.rowCount === 0) {
+      return res.status(404).json({ error: "Tag not found" });
+    }
+    const tagId = tagRes.rows[0].id;
+
+    // Remove the link in screenshot_tags
+    await query(
+      "DELETE FROM screenshot_tags WHERE screenshot_id = $1 AND tag_id = $2",
+      [id, tagId],
+    );
+
+    res.json({ message: "Tag removed from screenshot" });
+  } catch (error) {
+    console.error("Error removing tag: ", error);
+    res.status(500).json({ error: "Failed to remove tag" });
+  }
+};
+
 export const deleteScreenshot = async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   try {
