@@ -4,6 +4,7 @@ import "dotenv/config";
 import { createRouteHandler } from "uploadthing/express";
 import authRoutes from "./modules/auth/auth.routes";
 import screenshotRoutes from "./modules/screenshots/screenshots.routes";
+import linkRoutes from "./modules/links/links.routes";
 import { screenshotUploadRouter } from "./modules/screenshots/screenshots.upload";
 
 const app = express();
@@ -28,5 +29,6 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/screenshots", screenshotRoutes);
+app.use("/api/links", linkRoutes);
 
 export default app;
