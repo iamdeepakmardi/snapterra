@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router";
 import Login from "./pages/Login";
 import Screenshots from "./pages/Screenshots";
+import Links from "./pages/Links";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const token = localStorage.getItem("token");
@@ -20,6 +21,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Screenshots />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/links",
+    element: (
+      <ProtectedRoute>
+        <Links />
       </ProtectedRoute>
     ),
   },

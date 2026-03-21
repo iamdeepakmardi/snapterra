@@ -53,7 +53,7 @@ const Screenshots = () => {
 
   return (
     <div className="flex h-screen">
-      <Sidebar onUploadSuccess={fetchScreenshots} />
+      <Sidebar onSuccess={fetchScreenshots} />
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col bg-white overflow-hidden">
