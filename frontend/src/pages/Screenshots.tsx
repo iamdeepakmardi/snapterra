@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useUploadThing } from "../utils/uploadthing";
 import api from "../api/axios";
+import ImageModal from "../components/ImageModal";
 
 interface Screenshot {
   id: number;
@@ -285,26 +286,10 @@ const Screenshots = () => {
         </section>
       </main>
 
-      {/* Image Modal */}
-      {previewImage && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
-          onClick={() => setPreviewImage(null)}
-        >
-          <button
-            className="absolute top-6 right-6 p-2 text-white hover:cursor-pointer"
-            onClick={() => setPreviewImage(null)}
-          >
-            <X size={32} />
-          </button>
-          <img
-            src={previewImage}
-            alt="Preview"
-            className="max-w-full max-h-full object-contain"
-            onClick={(e) => e.stopPropagation()}
-          />
-        </div>
-      )}
+      <ImageModal
+        imageUrl={previewImage}
+        onClose={() => setPreviewImage(null)}
+      />
     </div>
   );
 };
