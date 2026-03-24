@@ -16,7 +16,7 @@ const Tasks = () => {
   const { refreshTrigger } = useOutletContext<LayoutContextType>();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [filter, setFilter] = useState<"all" | "todo" | "done">("all");
+  const [filter, setFilter] = useState<"all" | "todo" | "done">("todo");
 
   const fetchTasks = async () => {
     try {
@@ -69,7 +69,7 @@ const Tasks = () => {
           <h2 className="font-semibold text-zinc-900">Your Tasks</h2>
           <div className="h-4 w-1px bg-zinc-200" />
           <div className="flex items-center gap-1 bg-zinc-100 p-1 rounded-lg">
-            {(["all", "todo", "done"] as const).map((f) => (
+            {(["todo", "done", "all"] as const).map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
