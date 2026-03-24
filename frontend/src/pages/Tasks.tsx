@@ -63,17 +63,17 @@ const Tasks = () => {
   });
 
   return (
-    <div className="flex-1 flex flex-col bg-white overflow-hidden">
-      <header className="h-16 border-b border-zinc-200 flex items-center justify-between px-8 bg-white/80 backdrop-blur-md sticky top-0 z-10">
-        <div className="flex items-center gap-4">
-          <h2 className="font-semibold text-zinc-900">Your Tasks</h2>
-          <div className="h-4 w-1px bg-zinc-200" />
-          <div className="flex items-center gap-1 bg-zinc-100 p-1 rounded-lg">
+    <div className="flex-1 flex flex-col bg-white overflow-hidden w-full">
+      <header className="h-auto sm:h-16 border-b border-zinc-200 flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 lg:px-8 py-4 sm:py-0 bg-white/80 backdrop-blur-md sticky top-0 z-10 gap-4">
+        <div className="flex items-center gap-4 w-full sm:w-auto">
+          <h2 className="font-semibold text-zinc-900 shrink-0">Your Tasks</h2>
+          <div className="h-4 w-px bg-zinc-200 hidden xs:block" />
+          <div className="flex items-center gap-1 bg-zinc-100 p-1 rounded-lg overflow-x-auto">
             {(["todo", "done", "all"] as const).map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`px-3 py-1 text-[11px] font-medium rounded-md transition-all capitalize ${
+                className={`px-3 py-1 text-[10px] sm:text-[11px] font-medium rounded-md transition-all capitalize whitespace-nowrap ${
                   filter === f
                     ? "bg-white text-black shadow-sm"
                     : "text-zinc-500 hover:text-zinc-900"
@@ -84,12 +84,12 @@ const Tasks = () => {
             ))}
           </div>
         </div>
-        <div className="text-xs font-medium text-zinc-400">
+        <div className="text-xs font-medium text-zinc-400 hidden sm:block">
           {filteredTasks.length} tasks
         </div>
       </header>
 
-      <section className="flex-1 overflow-y-auto p-8">
+      <section className="flex-1 overflow-y-auto p-4 lg:p-8">
         {isLoading ? (
           <div className="flex justify-center py-20">
             <Loader2 size={32} className="animate-spin text-zinc-200" />
@@ -99,7 +99,7 @@ const Tasks = () => {
             {filteredTasks.map((task) => (
               <div
                 key={task.id}
-                className={`group flex items-start gap-4 p-5 rounded-xl border transition-all duration-200 ${
+                className={`group flex items-start gap-3 sm:gap-4 p-4 sm:p-5 rounded-xl border transition-all duration-200 ${
                   task.status === "done"
                     ? "bg-zinc-50/50 border-zinc-100 opacity-75"
                     : "bg-white border-zinc-200 hover:border-zinc-300 hover:shadow-sm"
@@ -122,7 +122,7 @@ const Tasks = () => {
 
                 <div className="flex-1 min-w-0 py-0.5">
                   <h3
-                    className={`text-sm font-semibold leading-none ${
+                    className={`text-sm sm:text-base font-semibold leading-tight wrap-break-words ${
                       task.status === "done"
                         ? "text-zinc-500 line-through"
                         : "text-zinc-900"
@@ -132,7 +132,7 @@ const Tasks = () => {
                   </h3>
                   {task.description && (
                     <p
-                      className={`mt-2 text-sm leading-relaxed ${
+                      className={`mt-2 text-xs sm:text-sm leading-relaxed break-words ${
                         task.status === "done"
                           ? "text-zinc-400"
                           : "text-zinc-600"
@@ -142,29 +142,31 @@ const Tasks = () => {
                     </p>
                   )}
                   <div className="flex items-center gap-3 mt-3">
-                    <span className="flex items-center gap-1 text-[10px] font-medium text-zinc-400 uppercase tracking-wider">
+                    <span className="flex items-center gap-1 text-[9px] sm:text-[10px] font-medium text-zinc-400 uppercase tracking-wider">
                       <Clock size={10} />
                       {new Date(task.created_at).toLocaleDateString()}
                     </span>
                   </div>
                 </div>
 
-                <button
-                  onClick={() => onDelete(task.id)}
-                  className="mt-1 p-2 text-zinc-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
-                >
-                  <Trash2 size={16} />
-                </button>
+                <div className="shrink-0 flex items-center gap-1">
+                  <button
+                    onClick={() => onDelete(task.id)}
+                    className="p-2 text-zinc-300 sm:opacity-0 sm:group-hover:opacity-100 opacity-100 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="h-[60vh] flex flex-col items-center justify-center text-center">
+          <div className="h-[60vh] flex flex-col items-center justify-center text-center p-8">
             <div className="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center mb-4">
               <CheckSquare size={32} className="text-zinc-200" />
             </div>
             <h3 className="text-zinc-900 font-semibold">No tasks found</h3>
-            <p className="text-zinc-500 text-sm mt-1 max-w-[200px]">
+            <p className="text-zinc-500 text-sm mt-1 max-w-[240px]">
               {filter === "all"
                 ? "Start adding tasks from the sidebar to stay organized."
                 : `You don't have any ${filter} tasks right now.`}

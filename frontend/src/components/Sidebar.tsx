@@ -13,20 +13,24 @@ import {
   Link as LinkIcon,
   CheckSquare,
   FileText,
+  X,
 } from "lucide-react";
 import { useUploadThing } from "../utils/uploadthing";
 import api from "../api/axios";
 
 interface SidebarProps {
   onSuccess: () => void;
+  onClose?: () => void;
 }
 
-const Sidebar = ({ onSuccess }: SidebarProps) => {
+const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [activeTab, setActiveTab] = useState<"screenshot" | "link" | "task">("screenshot");
+  const [activeTab, setActiveTab] = useState<"screenshot" | "link" | "task">(
+    "screenshot",
+  );
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState("");
   const [url, setUrl] = useState("");
@@ -108,12 +112,20 @@ const Sidebar = ({ onSuccess }: SidebarProps) => {
   };
 
   return (
-    <aside className="w-80 border-r flex flex-col bg-zinc-50">
-      <div className="p-6 border-b border-zinc-200">
+    <aside className="w-80 h-full border-r flex flex-col bg-zinc-50 max-w-[85vw]">
+      <div className="p-6 border-b border-zinc-200 flex items-center justify-between">
         <h1 className="text-xl font-semibold tracking-tight text-black flex items-center gap-2">
           <LayoutGrid size={24} />
           Snapterra
         </h1>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="lg:hidden p-2 text-zinc-500 hover:text-black"
+          >
+            <X size={20} />
+          </button>
+        )}
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -121,6 +133,7 @@ const Sidebar = ({ onSuccess }: SidebarProps) => {
         <nav className="p-4 space-y-1">
           <Link
             to="/screenshots"
+            onClick={() => onClose?.()}
             className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
               location.pathname === "/screenshots"
                 ? "bg-black text-white"
@@ -132,6 +145,7 @@ const Sidebar = ({ onSuccess }: SidebarProps) => {
           </Link>
           <Link
             to="/links"
+            onClick={() => onClose?.()}
             className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
               location.pathname === "/links"
                 ? "bg-black text-white"
@@ -143,6 +157,7 @@ const Sidebar = ({ onSuccess }: SidebarProps) => {
           </Link>
           <Link
             to="/tasks"
+            onClick={() => onClose?.()}
             className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
               location.pathname === "/tasks"
                 ? "bg-black text-white"
@@ -256,7 +271,9 @@ const Sidebar = ({ onSuccess }: SidebarProps) => {
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder={activeTab === "task" ? "Task title..." : "Enter title..."}
+                  placeholder={
+                    activeTab === "task" ? "Task title..." : "Enter title..."
+                  }
                   className="w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-1 focus:ring-black"
                 />
               </div>
@@ -278,7 +295,15 @@ const Sidebar = ({ onSuccess }: SidebarProps) => {
 
               <button
                 onClick={onSave}
-                disabled={isUploading || isSaving || (activeTab === "screenshot" ? !selectedFile : activeTab === "link" ? !url : !title)}
+                disabled={
+                  isUploading ||
+                  isSaving ||
+                  (activeTab === "screenshot"
+                    ? !selectedFile
+                    : activeTab === "link"
+                      ? !url
+                      : !title)
+                }
                 className="w-full mt-2 flex items-center justify-center gap-2 py-2.5 bg-black text-white text-sm font-medium rounded-md hover:bg-zinc-800 disabled:bg-zinc-300 disabled:cursor-not-allowed transition-colors"
               >
                 {isUploading || isSaving ? (
@@ -286,7 +311,11 @@ const Sidebar = ({ onSuccess }: SidebarProps) => {
                 ) : (
                   <Plus size={16} />
                 )}
-                {activeTab === "screenshot" ? "Save Screenshot" : activeTab === "link" ? "Save Link" : "Create Task"}
+                {activeTab === "screenshot"
+                  ? "Save Screenshot"
+                  : activeTab === "link"
+                    ? "Save Link"
+                    : "Create Task"}
               </button>
             </div>
           </div>

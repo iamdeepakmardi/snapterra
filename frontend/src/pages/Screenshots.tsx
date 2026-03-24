@@ -55,9 +55,9 @@ const Screenshots = () => {
 
   return (
     <>
-      <header className="h-16 border-b border-zinc-200 flex items-center justify-between px-8">
+      <header className="h-16 border-b border-zinc-200 flex items-center justify-between px-4 lg:px-8 bg-white shrink-0">
         <h2 className="font-medium text-black">All Screenshots</h2>
-        <div className="text-xs italic text-zinc-500">
+        <div className="text-xs italic text-zinc-500 hidden sm:block">
           Showing {screenshots.length} results
         </div>
       </header>
@@ -72,11 +72,11 @@ const Screenshots = () => {
             {screenshots.map((item) => (
               <div
                 key={item.id}
-                className="flex items-start justify-between gap-6 px-8 py-4 hover:bg-zinc-50 transition-colors"
+                className="flex flex-col sm:flex-row items-start justify-between gap-4 px-4 lg:px-8 py-6 hover:bg-zinc-50 transition-colors"
               >
-                <div className="flex flex-col gap-4 flex-1">
+                <div className="flex flex-col sm:flex-row gap-4 flex-1 w-full">
                   <div
-                    className="w-24 h-16 cursor-pointer hover:opacity-80 transition-opacity"
+                    className="w-full sm:w-24 h-48 sm:h-16 shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
                     onClick={() => setPreviewImage(item.filename)}
                   >
                     <img
@@ -86,8 +86,8 @@ const Screenshots = () => {
                     />
                   </div>
 
-                  <div className="max-w-4xl">
-                    <h3 className="text-xl font-semibold text-black leading-tight">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg sm:text-xl font-semibold text-black leading-tight wrap-break-words">
                       {item.title}
                     </h3>
                     <div className="flex flex-wrap gap-2 mt-3">
@@ -118,17 +118,19 @@ const Screenshots = () => {
                   </div>
                 </div>
 
-                <button
-                  onClick={() => onDelete(item.id)}
-                  className="p-2 text-red-500 hover:bg-red-50 rounded-md transition-colors"
-                >
-                  <Trash2 size={16} />
-                </button>
+                <div className="flex items-center gap-2 self-end sm:self-start">
+                  <button
+                    onClick={() => onDelete(item.id)}
+                    className="p-2 text-red-500 hover:bg-red-50 rounded-md transition-colors"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="h-full flex flex-col items-center justify-center text-zinc-400">
+          <div className="h-full flex flex-col items-center justify-center text-zinc-400 p-8 text-center">
             <Image size={40} className="mb-4 text-zinc-100" />
             <p className="text-sm font-medium">Your library is empty</p>
           </div>

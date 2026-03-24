@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router";
-import { Link as LinkIcon, Loader2, Trash2, X, Globe, ExternalLink } from "lucide-react";
+import {
+  Link as LinkIcon,
+  Loader2,
+  Trash2,
+  X,
+  Globe,
+  ExternalLink,
+} from "lucide-react";
 import api from "../api/axios";
 import type { LayoutContextType } from "../components/MainLayout";
 
@@ -53,9 +60,9 @@ const Links = () => {
 
   return (
     <>
-      <header className="h-16 border-b border-zinc-200 flex items-center justify-between px-8">
+      <header className="h-16 border-b border-zinc-200 flex items-center justify-between px-4 lg:px-8 bg-white shrink-0">
         <h2 className="font-medium text-black">All Links</h2>
-        <div className="text-xs italic text-zinc-500">
+        <div className="text-xs italic text-zinc-500 hidden sm:block">
           Showing {links.length} saved URLs
         </div>
       </header>
@@ -70,28 +77,28 @@ const Links = () => {
             {links.map((item) => (
               <div
                 key={item.id}
-                className="flex items-start justify-between gap-6 px-8 py-4 hover:bg-zinc-50 transition-colors group"
+                className="flex flex-col sm:flex-row items-start justify-between gap-4 px-4 lg:px-8 py-6 hover:bg-zinc-50 transition-colors group"
               >
-                <div className="flex flex-col gap-2 flex-1">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-zinc-100 rounded-lg text-zinc-500">
+                <div className="flex flex-col gap-2 flex-1 w-full min-w-0">
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-zinc-100 rounded-lg text-zinc-500 shrink-0">
                       <Globe size={20} />
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <h3 className="text-lg font-semibold text-black leading-tight">
+                        <h3 className="text-lg font-semibold text-black leading-tight wrap-break-words">
                           {item.title || "Untitled Link"}
                         </h3>
                         <a
                           href={item.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-zinc-400 hover:text-black transition-colors"
+                          className="text-zinc-400 hover:text-black transition-colors shrink-0"
                         >
                           <ExternalLink size={14} />
                         </a>
                       </div>
-                      <p className="text-sm text-zinc-500 truncate max-w-2xl mt-0.5">
+                      <p className="text-sm text-zinc-500 break-all mt-1">
                         {item.url}
                       </p>
                     </div>
@@ -114,22 +121,26 @@ const Links = () => {
                         </span>
                       ))
                     ) : (
-                      <span className="text-xs text-zinc-400 italic">No tags</span>
+                      <span className="text-xs text-zinc-400 italic">
+                        No tags
+                      </span>
                     )}
                   </div>
                 </div>
 
-                <button
-                  onClick={() => onDelete(item.id)}
-                  className="p-2 text-red-500 opacity-0 group-hover:opacity-100 hover:bg-red-50 rounded-md transition-all"
-                >
-                  <Trash2 size={16} />
-                </button>
+                <div className="flex items-center gap-2 self-end sm:self-start shrink-0">
+                  <button
+                    onClick={() => onDelete(item.id)}
+                    className="p-2 text-red-500 sm:opacity-0 sm:group-hover:opacity-100 opacity-100 hover:bg-red-50 rounded-md transition-all"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="h-full flex flex-col items-center justify-center text-zinc-400">
+          <div className="h-full flex flex-col items-center justify-center text-zinc-400 p-8 text-center">
             <LinkIcon size={40} className="mb-4 text-zinc-100" />
             <p className="text-sm font-medium">No links saved yet</p>
           </div>
