@@ -1,2 +1,0 @@
-- [ ] Tags System: Add or remove tags
-- [ ] Screenshot Search: Find screenshots by title or tag
