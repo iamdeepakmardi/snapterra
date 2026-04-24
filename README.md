@@ -52,7 +52,20 @@ bun install
 
 Ensure your database has the following tables: `users`, `screenshots`, `links`, `tasks`, and `tags`.
 
-### 5. Running Locally
+### 5. Running with Docker
+
+If you prefer using Docker, you can use the provided `docker-compose.yml` file.
+
+1. Ensure your `.env.local` is set up.
+2. Build and run the containers:
+
+```bash
+docker compose up --build
+```
+
+The app will be available at [http://localhost:3000](http://localhost:3000).
+
+### 6. Running Locally (without Docker)
 
 ```bash
 bun dev
