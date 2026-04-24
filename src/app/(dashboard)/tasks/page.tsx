@@ -31,7 +31,8 @@ export default function TasksPage() {
   };
 
   useEffect(() => {
-    fetchTasks();
+    const timeoutId = setTimeout(fetchTasks, 0);
+    return () => clearTimeout(timeoutId);
   }, [refreshTrigger]);
 
   const toggleStatus = async (task: Task) => {

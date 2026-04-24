@@ -49,7 +49,7 @@ export const ourFileRouter = {
               .filter(Boolean);
       
             for (const tagName of tagList) {
-              let tagRes = await query("SELECT id FROM tags WHERE name = $1", [tagName]);
+              const tagRes = await query("SELECT id FROM tags WHERE name = $1", [tagName]);
               let tagId;
       
               if (tagRes.rowCount === 0) {

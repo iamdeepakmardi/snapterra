@@ -19,8 +19,9 @@ export default function LoginPage() {
       });
       localStorage.setItem("token", response.data.token);
       router.push("/screenshots");
-    } catch (err: any) {
-      const errorMsg = err.response?.data?.message || err.response?.data?.error || "Invalid credentials";
+    } catch (err: unknown) {
+      const axiosError = err as any; 
+      const errorMsg = axiosError.response?.data?.message || axiosError.response?.data?.error || "Invalid credentials";
       console.error(errorMsg);
       alert(errorMsg);
     }
