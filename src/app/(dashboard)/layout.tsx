@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import { Menu } from "lucide-react";
 import QueryProvider from "@/components/providers/QueryProvider";
@@ -12,30 +11,10 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isChecking, setIsChecking] = useState(true);
-  const router = useRouter();
-
-  useEffect(() => {
-    const checkAuth = () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        router.push("/login");
-      } else {
-        setIsAuthenticated(true);
-      }
-      setIsChecking(false);
-    };
-
-    const timeoutId = setTimeout(checkAuth, 0);
-    return () => clearTimeout(timeoutId);
-  }, [router]);
 
   const handleSuccess = () => {
     setIsSidebarOpen(false);
   };
-
-  if (!isAuthenticated) return null;
 
   return (
     <QueryProvider>
