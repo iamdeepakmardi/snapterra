@@ -66,7 +66,9 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
       toast.success("Screenshot saved successfully");
       onSuccess();
     },
-    onUploadError: (e) => toast.error(`Upload failed: ${e.message}`),
+    onUploadError: (e) => {
+      toast.error(`Upload failed: ${e.message}`);
+    },
   });
 
   const resetForm = () => {
