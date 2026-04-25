@@ -24,6 +24,9 @@ import { useCreateTaskMutation } from "@/hooks/useTasks";
 import { useQueryClient } from "@tanstack/react-query";
 import { useUserQuery, useLogoutMutation } from "@/hooks/useUser";
 import { toast } from "sonner";
+import { useTheme } from "next-themes";
+import { Sun, Moon, Monitor } from "lucide-react";
+import { useEffect, useState as useReactState } from "react";
 
 interface SidebarProps {
   onSuccess: () => void;
@@ -33,6 +36,13 @@ interface SidebarProps {
 const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
   const router = useRouter();
   const pathname = usePathname();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useReactState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const createTaskMutation = useCreateTaskMutation();
   const queryClient = useQueryClient();
@@ -115,16 +125,16 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
   };
 
   return (
-    <aside className="w-80 h-full border-r flex flex-col bg-zinc-50 max-w-[85vw]">
-      <div className="p-6 border-b border-zinc-200 flex items-center justify-between">
-        <h1 className="text-xl font-semibold tracking-tight text-black flex items-center gap-2">
+    <aside className="w-80 h-full border-r flex flex-col bg-zinc-50 dark:bg-zinc-950 dark:border-zinc-800 max-w-[85vw]">
+      <div className="p-6 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
+        <h1 className="text-xl font-semibold tracking-tight text-black dark:text-white flex items-center gap-2">
           <LayoutGrid size={24} />
           Snapterra
         </h1>
         {onClose && (
           <button
             onClick={onClose}
-            className="lg:hidden p-2 text-zinc-500 hover:text-black"
+            className="lg:hidden p-2 text-zinc-500 hover:text-black dark:hover:text-white"
           >
             <X size={20} />
           </button>
@@ -139,8 +149,8 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
             onClick={() => onClose?.()}
             className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
               pathname === "/screenshots"
-                ? "bg-black text-white"
-                : "text-zinc-600 hover:bg-zinc-100 hover:text-black"
+                ? "bg-black text-white dark:bg-white dark:text-black"
+                : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:text-black dark:hover:text-white"
             }`}
           >
             <Image size={18} />
@@ -151,8 +161,8 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
             onClick={() => onClose?.()}
             className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
               pathname === "/links"
-                ? "bg-black text-white"
-                : "text-zinc-600 hover:bg-zinc-100 hover:text-black"
+                ? "bg-black text-white dark:bg-white dark:text-black"
+                : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:text-black dark:hover:text-white"
             }`}
           >
             <LinkIcon size={18} />
@@ -163,8 +173,8 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
             onClick={() => onClose?.()}
             className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
               pathname === "/tasks"
-                ? "bg-black text-white"
-                : "text-zinc-600 hover:bg-zinc-100 hover:text-black"
+                ? "bg-black text-white dark:bg-white dark:text-black"
+                : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:text-black dark:hover:text-white"
             }`}
           >
             <CheckSquare size={18} />
@@ -174,13 +184,13 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
 
         <div className="p-6 space-y-8 overflow-y-auto border-t">
           <div className="space-y-4">
-            <div className="flex p-1 bg-zinc-200 rounded-lg">
+            <div className="flex p-1 bg-zinc-200 dark:bg-zinc-900 rounded-lg">
               <button
                 onClick={() => setActiveTab("screenshot")}
                 className={`flex-1 flex items-center justify-center gap-2 py-1.5 text-xs font-medium rounded-md transition-all ${
                   activeTab === "screenshot"
-                    ? "bg-white text-black shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700"
+                    ? "bg-white text-black shadow-sm dark:bg-zinc-800 dark:text-white"
+                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
                 }`}
               >
                 <Image size={14} />
@@ -190,8 +200,8 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
                 onClick={() => setActiveTab("link")}
                 className={`flex-1 flex items-center justify-center gap-2 py-1.5 text-xs font-medium rounded-md transition-all ${
                   activeTab === "link"
-                    ? "bg-white text-black shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700"
+                    ? "bg-white text-black shadow-sm dark:bg-zinc-800 dark:text-white"
+                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
                 }`}
               >
                 <LinkIcon size={14} />
@@ -201,8 +211,8 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
                 onClick={() => setActiveTab("task")}
                 className={`flex-1 flex items-center justify-center gap-2 py-1.5 text-xs font-medium rounded-md transition-all ${
                   activeTab === "task"
-                    ? "bg-white text-black shadow-sm"
-                    : "text-zinc-500 hover:text-zinc-700"
+                    ? "bg-white text-black shadow-sm dark:bg-zinc-800 dark:text-white"
+                    : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
                 }`}
               >
                 <CheckSquare size={14} />
@@ -213,15 +223,15 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
             <div className="space-y-4">
               {activeTab === "screenshot" && (
                 <div className="space-y-1">
-                  <label className="text-sm font-medium flex items-center gap-2">
+                  <label className="text-sm font-medium flex items-center gap-2 dark:text-zinc-300">
                     <FileUp size={14} /> Image File
                   </label>
                   <div
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-full px-3 py-4 border-2 border-dashed rounded-lg bg-white cursor-pointer hover:bg-zinc-50 transition-colors"
+                    className="w-full px-3 py-4 border-2 border-dashed rounded-lg bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
                   >
                     <FileUp size={20} className="text-zinc-400 mb-1 mx-auto" />
-                    <span className="text-xs block text-center truncate px-2 text-zinc-500">
+                    <span className="text-xs block text-center truncate px-2 text-zinc-500 dark:text-zinc-400">
                       {selectedFile ? selectedFile.name : "Select an image"}
                     </span>
                     <input
@@ -237,7 +247,7 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
 
               {activeTab === "link" && (
                 <div className="space-y-1">
-                  <label className="text-sm font-medium flex items-center gap-2">
+                  <label className="text-sm font-medium flex items-center gap-2 dark:text-zinc-300">
                     <Globe size={14} /> Website URL
                   </label>
                   <input
@@ -245,14 +255,14 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
                     placeholder="https://example.com"
-                    className="w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-1 focus:ring-black text-black"
+                    className="w-full px-3 py-2 text-sm border dark:border-zinc-800 rounded-md focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white bg-white dark:bg-zinc-900 text-black dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600"
                   />
                 </div>
               )}
 
               {activeTab === "task" && (
                 <div className="space-y-1">
-                  <label className="text-sm font-medium flex items-center gap-2">
+                  <label className="text-sm font-medium flex items-center gap-2 dark:text-zinc-300">
                     <FileText size={14} /> Description
                   </label>
                   <textarea
@@ -260,13 +270,13 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Task details..."
                     rows={3}
-                    className="w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-1 focus:ring-black resize-none text-black"
+                    className="w-full px-3 py-2 text-sm border dark:border-zinc-800 rounded-md focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white resize-none bg-white dark:bg-zinc-900 text-black dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600"
                   />
                 </div>
               )}
 
               <div className="space-y-1">
-                <label className="text-sm font-medium flex items-center gap-2">
+                <label className="text-sm font-medium flex items-center gap-2 dark:text-zinc-300">
                   <Type size={14} /> Title
                 </label>
                 <input
@@ -276,13 +286,13 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
                   placeholder={
                     activeTab === "task" ? "Task title..." : "Enter title..."
                   }
-                  className="w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-1 focus:ring-black text-black"
+                  className="w-full px-3 py-2 text-sm border dark:border-zinc-800 rounded-md focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white bg-white dark:bg-zinc-900 text-black dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600"
                 />
               </div>
 
               {activeTab !== "task" && (
                 <div className="space-y-1">
-                  <label className="text-sm font-medium flex items-center gap-2">
+                  <label className="text-sm font-medium flex items-center gap-2 dark:text-zinc-300">
                     <Tag size={14} /> Tags
                   </label>
                   <input
@@ -290,7 +300,7 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
                     value={tags}
                     onChange={(e) => setTags(e.target.value)}
                     placeholder="coding, design, news..."
-                    className="w-full px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-1 focus:ring-black text-black"
+                    className="w-full px-3 py-2 text-sm border dark:border-zinc-800 rounded-md focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white bg-white dark:bg-zinc-900 text-black dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600"
                   />
                 </div>
               )}
@@ -306,7 +316,7 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
                       ? !url
                       : !title)
                 }
-                className="w-full mt-2 flex items-center justify-center gap-2 py-2.5 bg-black text-white text-sm font-medium rounded-md hover:bg-zinc-800 disabled:bg-zinc-300 disabled:cursor-not-allowed transition-colors"
+                className="w-full mt-2 flex items-center justify-center gap-2 py-2.5 bg-black text-white dark:bg-white dark:text-black text-sm font-medium rounded-md hover:bg-zinc-800 dark:hover:bg-zinc-200 disabled:bg-zinc-300 dark:disabled:bg-zinc-800 disabled:cursor-not-allowed transition-colors"
               >
                 {isUploading || isSaving ? (
                   <Loader2 size={16} className="animate-spin" />
@@ -324,24 +334,69 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
         </div>
       </div>
 
-      <div className="p-4 border-t border-zinc-200 bg-zinc-50 space-y-4">
+      <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 space-y-2">
+        {mounted && (
+          <div className="flex p-1 bg-zinc-200 dark:bg-zinc-900 rounded-lg mb-2">
+            <button
+              onClick={() => setTheme("light")}
+              className={`flex-1 flex items-center justify-center py-1.5 rounded-md transition-all ${
+                theme === "light"
+                  ? "bg-white text-black shadow-sm dark:bg-zinc-800 dark:text-white"
+                  : "text-zinc-500 hover:text-zinc-700"
+              }`}
+              title="Light Mode"
+            >
+              <Sun size={14} />
+            </button>
+            <button
+              onClick={() => setTheme("dark")}
+              className={`flex-1 flex items-center justify-center py-1.5 rounded-md transition-all ${
+                theme === "dark"
+                  ? "bg-white text-black shadow-sm dark:bg-zinc-800 dark:text-white"
+                  : "text-zinc-500 hover:text-zinc-700"
+              }`}
+              title="Dark Mode"
+            >
+              <Moon size={14} />
+            </button>
+            <button
+              onClick={() => setTheme("system")}
+              className={`flex-1 flex items-center justify-center py-1.5 rounded-md transition-all ${
+                theme === "system"
+                  ? "bg-white text-black shadow-sm dark:bg-zinc-800 dark:text-white"
+                  : "text-zinc-500 hover:text-zinc-700"
+              }`}
+              title="System Default"
+            >
+              <Monitor size={14} />
+            </button>
+          </div>
+        )}
+
         {user && (
           <div className="px-3 py-2">
-            <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Signed in as</p>
-            <p className="text-sm font-medium text-black truncate">{user.email}</p>
+            <p className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-0.5">
+              Signed in as
+            </p>
+            <p className="text-xs font-semibold text-zinc-900 dark:text-zinc-200 truncate">
+              {user.email}
+            </p>
           </div>
         )}
         <button
           onClick={handleLogout}
           disabled={logoutMutation.isPending}
-          className="w-full flex items-center gap-3 px-3 py-2 text-sm text-zinc-600 hover:text-black hover:bg-zinc-100 rounded-md transition-all group disabled:opacity-50"
+          className="w-full flex items-center gap-3 px-3 py-2 text-sm text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-md transition-all group disabled:opacity-50"
         >
           {logoutMutation.isPending ? (
             <Loader2 size={16} className="animate-spin" />
           ) : (
-            <LogOut size={16} className="group-hover:text-black" />
+            <LogOut
+              size={16}
+              className="group-hover:text-black dark:group-hover:text-white"
+            />
           )}
-          <span>Sign out</span>
+          <span className="font-medium">Sign out</span>
         </button>
       </div>
     </aside>

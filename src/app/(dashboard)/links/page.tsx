@@ -75,49 +75,49 @@ export default function LinksPage() {
 
   return (
     <>
-      <header className="h-16 border-b border-zinc-200 flex items-center justify-between px-4 lg:px-8 bg-white shrink-0">
-        <h2 className="font-medium text-black">All Links</h2>
-        <div className="text-xs italic text-zinc-500 hidden sm:block">
+      <header className="h-16 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between px-4 lg:px-8 bg-white dark:bg-zinc-950 shrink-0">
+        <h2 className="font-medium text-black dark:text-white">All Links</h2>
+        <div className="text-xs italic text-zinc-500 dark:text-zinc-400 hidden sm:block">
           Showing {links.length} saved URLs
         </div>
       </header>
 
-      <section className="flex-1 overflow-y-auto">
+      <section className="flex-1 overflow-y-auto bg-white dark:bg-zinc-950">
         {isLoading ? (
           <div className="flex justify-center py-20">
-            <Loader2 size={32} className="animate-spin text-zinc-200" />
+            <Loader2 size={32} className="animate-spin text-zinc-200 dark:text-zinc-800" />
           </div>
         ) : error ? (
-          <div className="p-8 text-center text-red-500">
+          <div className="p-8 text-center text-red-500 dark:text-red-400">
             Failed to load links.
           </div>
         ) : links.length > 0 ? (
-          <div className="divide-y divide-zinc-100">
+          <div className="divide-y divide-zinc-100 dark:divide-zinc-900">
             {links.map((item: LinkItem) => (
               <div
                 key={item.id}
-                className="flex flex-col sm:flex-row items-start justify-between gap-4 px-4 lg:px-8 py-6 hover:bg-zinc-50 transition-colors group"
+                className="flex flex-col sm:flex-row items-start justify-between gap-4 px-4 lg:px-8 py-6 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors group"
               >
                 <div className="flex flex-col gap-2 flex-1 w-full min-w-0">
                   <div className="flex items-start gap-3">
-                    <div className="p-2 bg-zinc-100 rounded-lg text-zinc-500 shrink-0">
+                    <div className="p-2 bg-zinc-100 dark:bg-zinc-900 rounded-lg text-zinc-500 dark:text-zinc-400 shrink-0">
                       <Globe size={20} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <h3 className="text-lg font-semibold text-black leading-tight wrap-break-words">
+                        <h3 className="text-lg font-semibold text-black dark:text-white leading-tight wrap-break-words">
                           {item.title || "Untitled Link"}
                         </h3>
                         <a
                           href={item.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-zinc-400 hover:text-black transition-colors shrink-0"
+                          className="text-zinc-400 dark:text-zinc-600 hover:text-black dark:hover:text-white transition-colors shrink-0"
                         >
                           <ExternalLink size={14} />
                         </a>
                       </div>
-                      <p className="text-sm text-zinc-500 break-all mt-1">
+                      <p className="text-sm text-zinc-500 dark:text-zinc-400 break-all mt-1">
                         {item.url}
                       </p>
                     </div>
@@ -128,19 +128,19 @@ export default function LinksPage() {
                       item.tags.split(",").map((tag: string, idx: number) => (
                         <span
                           key={idx}
-                          className="flex items-center gap-1.5 bg-zinc-100 text-zinc-700 px-3 py-1 rounded-md text-xs font-medium border border-zinc-200"
+                          className="flex items-center gap-1.5 bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 px-3 py-1 rounded-md text-xs font-medium border border-zinc-200 dark:border-zinc-800"
                         >
                           {tag.trim()}
                           <button
                             onClick={() => onRemoveTag(item.id, tag.trim())}
-                            className="p-0.5 rounded-full hover:bg-zinc-200 text-zinc-400 hover:text-red-500 transition-colors"
+                            className="p-0.5 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-400 dark:text-zinc-600 hover:text-red-500 dark:hover:text-red-400 transition-colors"
                           >
                             <X size={12} />
                           </button>
                         </span>
                       ))
                     ) : (
-                      <span className="text-xs text-zinc-400 italic">
+                      <span className="text-xs text-zinc-400 dark:text-zinc-600 italic">
                         No tags
                       </span>
                     )}
@@ -150,7 +150,7 @@ export default function LinksPage() {
                 <div className="flex items-center gap-2 self-end sm:self-start shrink-0">
                   <button
                     onClick={() => onDelete(item.id)}
-                    className="p-2 text-red-500 sm:opacity-0 sm:group-hover:opacity-100 opacity-100 hover:bg-red-50 rounded-md transition-all"
+                    className="p-2 text-red-500 sm:opacity-0 sm:group-hover:opacity-100 opacity-100 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-md transition-all"
                   >
                     <Trash2 size={16} />
                   </button>
@@ -160,13 +160,13 @@ export default function LinksPage() {
 
             <div ref={observerTarget} className="h-10 flex justify-center items-center">
               {isFetchingNextPage && (
-                <Loader2 size={24} className="animate-spin text-zinc-300" />
+                <Loader2 size={24} className="animate-spin text-zinc-300 dark:text-zinc-700" />
               )}
             </div>
           </div>
         ) : (
-          <div className="h-full flex flex-col items-center justify-center text-zinc-400 p-8 text-center">
-            <LinkIcon size={40} className="mb-4 text-zinc-100" />
+          <div className="h-full flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-600 p-8 text-center">
+            <LinkIcon size={40} className="mb-4 text-zinc-100 dark:text-zinc-900" />
             <p className="text-sm font-medium">No links saved yet</p>
           </div>
         )}

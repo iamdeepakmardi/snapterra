@@ -73,28 +73,30 @@ export default function ScreenshotsPage() {
 
   return (
     <>
-      <header className="h-16 border-b border-zinc-200 flex items-center justify-between px-4 lg:px-8 bg-white shrink-0">
-        <h2 className="font-medium text-black">All Screenshots</h2>
-        <div className="text-xs italic text-zinc-500 hidden sm:block">
+      <header className="h-16 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between px-4 lg:px-8 bg-white dark:bg-zinc-950 shrink-0">
+        <h2 className="font-medium text-black dark:text-white">
+          All Screenshots
+        </h2>
+        <div className="text-xs italic text-zinc-500 dark:text-zinc-400 hidden sm:block">
           Showing {screenshots.length} results
         </div>
       </header>
 
-      <section className="flex-1 overflow-y-auto">
+      <section className="flex-1 overflow-y-auto bg-white dark:bg-zinc-950">
         {isLoading ? (
           <div className="flex justify-center py-20">
-            <Loader2 size={32} className="animate-spin text-zinc-200" />
+            <Loader2 size={32} className="animate-spin text-zinc-200 dark:text-zinc-800" />
           </div>
         ) : error ? (
-          <div className="p-8 text-center text-red-500">
+          <div className="p-8 text-center text-red-500 dark:text-red-400">
             Failed to load screenshots.
           </div>
         ) : screenshots.length > 0 ? (
-          <div className="divide-y divide-zinc-100">
+          <div className="divide-y divide-zinc-100 dark:divide-zinc-900">
             {screenshots.map((item: Screenshot) => (
               <div
                 key={item.id}
-                className="flex flex-col sm:flex-row items-start justify-between gap-4 px-4 lg:px-8 py-6 hover:bg-zinc-50 transition-colors"
+                className="flex flex-col sm:flex-row items-start justify-between gap-4 px-4 lg:px-8 py-6 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
               >
                 <div className="flex flex-col sm:flex-row gap-4 flex-1 w-full">
                   <div
@@ -106,12 +108,12 @@ export default function ScreenshotsPage() {
                       width={32}
                       src={item.filename}
                       alt={item.title}
-                      className="w-full h-full object-cover rounded border border-zinc-200"
+                      className="w-full h-full object-cover rounded border border-zinc-200 dark:border-zinc-800"
                     />
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-lg sm:text-xl font-semibold text-black leading-tight wrap-break-words">
+                    <h3 className="text-lg sm:text-xl font-semibold text-black dark:text-white leading-tight wrap-break-words">
                       {item.title}
                     </h3>
                     <div className="flex flex-wrap gap-2 mt-3">
@@ -119,7 +121,7 @@ export default function ScreenshotsPage() {
                         item.tags.split(",").map((tag: string, idx: number) => (
                           <span
                             key={idx}
-                            className="flex items-center gap-1.5 bg-zinc-100 text-zinc-700 px-3 py-1 rounded-md text-xs font-medium border border-zinc-200"
+                            className="flex items-center gap-1.5 bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 px-3 py-1 rounded-md text-xs font-medium border border-zinc-200 dark:border-zinc-800"
                           >
                             {tag.trim()}
                             <button
@@ -127,14 +129,14 @@ export default function ScreenshotsPage() {
                                 e.stopPropagation();
                                 onRemoveTag(item.id, tag.trim());
                               }}
-                              className="p-0.5 rounded-full hover:bg-zinc-200 text-zinc-400 hover:text-red-500 transition-colors"
+                              className="p-0.5 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-400 dark:text-zinc-600 hover:text-red-500 dark:hover:text-red-400 transition-colors"
                             >
                               <X size={12} />
                             </button>
                           </span>
                         ))
                       ) : (
-                        <span className="text-xs text-zinc-400 italic">
+                        <span className="text-xs text-zinc-400 dark:text-zinc-600 italic">
                           No tags
                         </span>
                       )}
@@ -145,7 +147,7 @@ export default function ScreenshotsPage() {
                 <div className="flex items-center gap-2 self-end sm:self-start">
                   <button
                     onClick={() => onDelete(item.id)}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-md transition-colors"
+                    className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-md transition-colors"
                   >
                     <Trash2 size={16} />
                   </button>
@@ -158,13 +160,13 @@ export default function ScreenshotsPage() {
               className="h-10 flex justify-center items-center"
             >
               {isFetchingNextPage && (
-                <Loader2 size={24} className="animate-spin text-zinc-300" />
+                <Loader2 size={24} className="animate-spin text-zinc-300 dark:text-zinc-700" />
               )}
             </div>
           </div>
         ) : (
-          <div className="h-full flex flex-col items-center justify-center text-zinc-400 p-8 text-center">
-            <ImageIcon size={40} className="mb-4 text-zinc-100" />
+          <div className="h-full flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-600 p-8 text-center">
+            <ImageIcon size={40} className="mb-4 text-zinc-100 dark:text-zinc-900" />
             <p className="text-sm font-medium">Your library is empty</p>
           </div>
         )}
