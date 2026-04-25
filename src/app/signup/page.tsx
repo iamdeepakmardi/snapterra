@@ -20,7 +20,7 @@ export default function SignupPage() {
 
     try {
       await api.post("/auth/signup", { email, password });
-      router.push("/tasks");
+      router.push("/upgrade");
       router.refresh();
     } catch (err: any) {
       setError(err.response?.data?.error || "Signup failed");
@@ -34,8 +34,12 @@ export default function SignupPage() {
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-zinc-200 overflow-hidden">
         <div className="p-8">
           <div className="text-center mb-10">
-            <h1 className="text-3xl font-bold text-black tracking-tight text-center">Get Started</h1>
-            <p className="text-zinc-500 mt-2 text-sm">Join Snapterra today and start organizing.</p>
+            <h1 className="text-3xl font-bold text-black tracking-tight text-center">
+              Get Started
+            </h1>
+            <p className="text-zinc-500 mt-2 text-sm">
+              Join Snapterra today and start organizing.
+            </p>
           </div>
 
           {error && (
@@ -85,13 +89,20 @@ export default function SignupPage() {
               disabled={loading}
               className="w-full py-3 bg-black text-white rounded-xl font-semibold hover:bg-zinc-800 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Create Account"}
+              {loading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                "Create Account"
+              )}
             </button>
           </form>
 
           <div className="mt-8 text-center text-sm">
             <span className="text-zinc-500">Already have an account? </span>
-            <Link href="/login" className="text-black font-semibold hover:underline">
+            <Link
+              href="/login"
+              className="text-black font-semibold hover:underline"
+            >
               Sign in here
             </Link>
           </div>

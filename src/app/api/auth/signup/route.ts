@@ -43,7 +43,7 @@ export async function POST(request: Request) {
     await setAuthCookie(token);
 
     return NextResponse.json(
-      { message: "User created successfully", userId },
+      { message: "User created successfully", userId, redirectTo: "/upgrade" },
       { status: 201 },
     );
   } catch (error) {

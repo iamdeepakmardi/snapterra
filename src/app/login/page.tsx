@@ -34,8 +34,12 @@ export default function LoginPage() {
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-zinc-200 overflow-hidden">
         <div className="p-8">
           <div className="text-center mb-10">
-            <h1 className="text-3xl font-bold text-black tracking-tight">Snapterra</h1>
-            <p className="text-zinc-500 mt-2 text-sm">Welcome back. Please enter your details.</p>
+            <h1 className="text-3xl font-bold text-black tracking-tight">
+              Snapterra
+            </h1>
+            <p className="text-zinc-500 mt-2 text-sm">
+              Welcome back. Please enter your details.
+            </p>
           </div>
 
           {error && (
@@ -84,13 +88,20 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full py-3 bg-black text-white rounded-xl font-semibold hover:bg-zinc-800 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Sign In"}
+              {loading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                "Sign In"
+              )}
             </button>
           </form>
 
           <div className="mt-8 text-center text-sm">
-            <span className="text-zinc-500">Don't have an account? </span>
-            <Link href="/signup" className="text-black font-semibold hover:underline">
+            <span className="text-zinc-500">Don&apos;t have an account? </span>
+            <Link
+              href="/signup"
+              className="text-black font-semibold hover:underline"
+            >
               Create one for free
             </Link>
           </div>
