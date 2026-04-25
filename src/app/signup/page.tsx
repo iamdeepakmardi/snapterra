@@ -4,26 +4,26 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import api from "@/lib/axios";
-import { Loader2, Mail, Lock } from "lucide-react";
+import { Loader2, Mail, Lock, UserPlus } from "lucide-react";
 
-export default function LoginPage() {
+export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      await api.post("/auth/login", { email, password });
+      await api.post("/auth/signup", { email, password });
       router.push("/tasks");
       router.refresh();
     } catch (err: any) {
-      setError(err.response?.data?.message || "Login failed");
+      setError(err.response?.data?.error || "Signup failed");
     } finally {
       setLoading(false);
     }
@@ -34,8 +34,8 @@ export default function LoginPage() {
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-zinc-200 overflow-hidden">
         <div className="p-8">
           <div className="text-center mb-10">
-            <h1 className="text-3xl font-bold text-black tracking-tight">Snapterra</h1>
-            <p className="text-zinc-500 mt-2 text-sm">Welcome back. Please enter your details.</p>
+            <h1 className="text-3xl font-bold text-black tracking-tight text-center">Get Started</h1>
+            <p className="text-zinc-500 mt-2 text-sm">Join Snapterra today and start organizing.</p>
           </div>
 
           {error && (
@@ -44,7 +44,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form onSubmit={handleLogin} className="space-y-6">
+          <form onSubmit={handleSignup} className="space-y-6">
             <div>
               <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">
                 Email Address
@@ -71,10 +71,11 @@ export default function LoginPage() {
                 <input
                   type="password"
                   required
+                  minLength={6}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all text-sm"
-                  placeholder="••••••••"
+                  placeholder="Min 6 characters"
                 />
               </div>
             </div>
@@ -84,14 +85,14 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full py-3 bg-black text-white rounded-xl font-semibold hover:bg-zinc-800 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Sign In"}
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Create Account"}
             </button>
           </form>
 
           <div className="mt-8 text-center text-sm">
-            <span className="text-zinc-500">Don't have an account? </span>
-            <Link href="/signup" className="text-black font-semibold hover:underline">
-              Create one for free
+            <span className="text-zinc-500">Already have an account? </span>
+            <Link href="/login" className="text-black font-semibold hover:underline">
+              Sign in here
             </Link>
           </div>
         </div>
