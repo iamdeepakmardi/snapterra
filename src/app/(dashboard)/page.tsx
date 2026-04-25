@@ -1,7 +1,7 @@
 "use client";
 
 import { useUserQuery } from "@/hooks/useUser";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/axios";
 import { 
   BarChart3, 
@@ -15,13 +15,15 @@ import {
   ExternalLink,
   History,
   ShieldCheck,
-  Loader2
+  Loader2,
+  XCircle
 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 
 export default function DashboardHome() {
   const { data: user } = useUserQuery();
+  const queryClient = useQueryClient();
   
   const { data: stats, isLoading } = useQuery({
     queryKey: ["dashboard-stats"],
@@ -39,6 +41,21 @@ export default function DashboardHome() {
       }
     } catch (err) {
       toast.error("Could not load billing portal");
+    }
+  };
+
+  const handleCancelSubscription = async () => {
+    if (!confirm("Are you sure you want to cancel your subscription? You will lose Pro features at the end of your billing cycle.")) {
+      return;
+    }
+
+    try {
+      await api.post("/billing/cancel");
+      toast.success("Subscription cancellation requested. It may take a few moments to update.");
+      // Invalidate user query to update UI (though it might take a webhook to fully update)
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    } catch (err) {
+      toast.error("Failed to cancel subscription. Please try again or contact support.");
     }
   };
 
@@ -72,13 +89,23 @@ export default function DashboardHome() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <button 
-              onClick={handlePortalRedirect}
-              className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-sm font-semibold hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-sm"
-            >
-              <Settings2 size={16} />
-              Billing Portal
-            </button>
+            {user?.is_pro ? (
+              <button 
+                onClick={handleCancelSubscription}
+                className="flex items-center gap-2 px-4 py-2 bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 rounded-xl text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/20 transition-colors shadow-sm"
+              >
+                <XCircle size={16} />
+                Cancel Subscription
+              </button>
+            ) : (
+              <button 
+                onClick={handlePortalRedirect}
+                className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-sm font-semibold hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-sm"
+              >
+                <Settings2 size={16} />
+                Billing Portal
+              </button>
+            )}
             {!user?.is_pro && (
               <Link
                 href="/upgrade"

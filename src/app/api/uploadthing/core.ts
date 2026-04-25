@@ -1,5 +1,5 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { verifyToken } from "@/lib/auth";
+import { getUserIdFromRequest } from "@/lib/auth";
 import { query } from "@/lib/db";
 import { z } from "zod";
 
@@ -19,12 +19,8 @@ export const ourFileRouter = {
       }),
     )
     .middleware(async ({ req, input }) => {
-      const authHeader = req.headers.get("authorization");
-      const token = authHeader?.split(" ")[1];
-      if (!token) throw new Error("Unauthorized");
-
-      const userId = verifyToken(token);
-      if (!userId) throw new Error("Invalid token");
+      const userId = await getUserIdFromRequest();
+      if (!userId) throw new Error("Unauthorized");
 
       return {
         userId: Number(userId),

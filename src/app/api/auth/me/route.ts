@@ -11,7 +11,7 @@ export async function GET() {
 
   try {
     const result = await query(
-      "SELECT id, email, is_pro, storage_used FROM users WHERE id = $1",
+      "SELECT id, email, is_pro, storage_used, subscription_id FROM users WHERE id = $1",
       [userId],
     );
 

@@ -6,6 +6,7 @@ export interface User {
   email: string;
   is_pro: boolean;
   storage_used: string; // BIGINT comes as string from pg
+  subscription_id?: string;
 }
 
 export const useUserQuery = () => {
