@@ -8,6 +8,7 @@ import {
   useDeleteTaskMutation,
   Task,
 } from "@/hooks/useTasks";
+import { toast } from "sonner";
 
 export default function TasksPage() {
   const { data: tasks = [], isLoading } = useTasksQuery();
@@ -16,15 +17,22 @@ export default function TasksPage() {
   const [filter, setFilter] = useState<"all" | "todo" | "done">("todo");
 
   const toggleStatus = async (task: Task) => {
-    updateStatusMutation.mutate({
-      id: task.id,
-      status: task.status === "todo" ? "done" : "todo",
-    });
+    const newStatus = task.status === "todo" ? "done" : "todo";
+    updateStatusMutation.mutate(
+      { id: task.id, status: newStatus },
+      {
+        onSuccess: () => toast.success(`Task marked as ${newStatus}`),
+        onError: () => toast.error("Failed to update task"),
+      },
+    );
   };
 
   const onDelete = async (id: number) => {
-    if (!confirm("Delete this task?")) return;
-    deleteMutation.mutate(id);
+    toast.info("Deleting task...", { id: "delete-task" });
+    deleteMutation.mutate(id, {
+      onSuccess: () => toast.success("Task deleted", { id: "delete-task" }),
+      onError: () => toast.error("Failed to delete task", { id: "delete-task" }),
+    });
   };
 
   const filteredTasks = tasks.filter((t) => {

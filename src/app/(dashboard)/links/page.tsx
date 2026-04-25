@@ -15,6 +15,7 @@ import {
   useRemoveLinkTagMutation,
   LinkItem,
 } from "@/hooks/useLinks";
+import { toast } from "sonner";
 
 export default function LinksPage() {
   const observerTarget = useRef<HTMLDivElement>(null);
@@ -53,12 +54,21 @@ export default function LinksPage() {
   }, [handleObserver]);
 
   const onDelete = async (id: number) => {
-    if (!confirm("Delete this link?")) return;
-    deleteMutation.mutate(id);
+    toast.info("Deleting link...", { id: "delete-link" });
+    deleteMutation.mutate(id, {
+      onSuccess: () => toast.success("Link deleted", { id: "delete-link" }),
+      onError: () => toast.error("Failed to delete link", { id: "delete-link" }),
+    });
   };
 
   const onRemoveTag = async (linkId: number, tagName: string) => {
-    removeTagMutation.mutate({ linkId, tagName });
+    removeTagMutation.mutate(
+      { linkId, tagName },
+      {
+        onSuccess: () => toast.success(`Removed tag: ${tagName}`),
+        onError: () => toast.error("Failed to remove tag"),
+      }
+    );
   };
 
   const links = data?.pages.flat() || [];

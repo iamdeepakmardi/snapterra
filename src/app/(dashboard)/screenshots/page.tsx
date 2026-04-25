@@ -10,6 +10,7 @@ import {
 } from "@/hooks/useScreenshots";
 import ImageModal from "@/components/ImageModal";
 import Image from "next/image";
+import { toast } from "sonner";
 
 export default function ScreenshotsPage() {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -49,12 +50,23 @@ export default function ScreenshotsPage() {
   }, [handleObserver]);
 
   const onDelete = async (id: number) => {
-    if (!confirm("Delete this screenshot?")) return;
-    deleteMutation.mutate(id);
+    toast.info("Deleting screenshot...", { id: "delete-screenshot" });
+    deleteMutation.mutate(id, {
+      onSuccess: () =>
+        toast.success("Screenshot deleted", { id: "delete-screenshot" }),
+      onError: () =>
+        toast.error("Failed to delete screenshot", { id: "delete-screenshot" }),
+    });
   };
 
   const onRemoveTag = async (screenshotId: number, tagName: string) => {
-    removeTagMutation.mutate({ screenshotId, tagName });
+    removeTagMutation.mutate(
+      { screenshotId, tagName },
+      {
+        onSuccess: () => toast.success(`Removed tag: ${tagName}`),
+        onError: () => toast.error("Failed to remove tag"),
+      }
+    );
   };
 
   const screenshots = data?.pages.flat() || [];

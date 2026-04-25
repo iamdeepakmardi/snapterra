@@ -23,6 +23,7 @@ import api from "@/lib/axios";
 import { useCreateTaskMutation } from "@/hooks/useTasks";
 import { useQueryClient } from "@tanstack/react-query";
 import { useUserQuery, useLogoutMutation } from "@/hooks/useUser";
+import { toast } from "sonner";
 
 interface SidebarProps {
   onSuccess: () => void;
@@ -52,9 +53,10 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
     onClientUploadComplete: async () => {
       resetForm();
       queryClient.invalidateQueries({ queryKey: ["screenshots"] });
+      toast.success("Screenshot saved successfully");
       onSuccess();
     },
-    onUploadError: (e) => alert(e.message),
+    onUploadError: (e) => toast.error(`Upload failed: ${e.message}`),
   });
 
   const resetForm = () => {
@@ -87,9 +89,10 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
         await api.post("/links", { title, url, tags });
         resetForm();
         queryClient.invalidateQueries({ queryKey: ["links"] });
+        toast.success("Link saved successfully");
         onSuccess();
       } catch (err) {
-        alert("Failed to save link");
+        toast.error("Failed to save link");
       } finally {
         setIsSaving(false);
       }
@@ -100,10 +103,11 @@ const Sidebar = ({ onSuccess, onClose }: SidebarProps) => {
         {
           onSuccess: () => {
             resetForm();
+            toast.success("Task created successfully");
             onSuccess();
           },
           onError: () => {
-            alert("Failed to save task");
+            toast.error("Failed to save task");
           },
         },
       );
