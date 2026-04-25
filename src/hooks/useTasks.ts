@@ -5,7 +5,7 @@ export interface Task {
   id: number;
   title: string;
   description: string;
-  status: "todo" | "done";
+  status: "todo" | "in-progress" | "done";
   created_at: string;
 }
 
@@ -55,7 +55,7 @@ export const useUpdateTaskStatusMutation = () => {
       status,
     }: {
       id: number;
-      status: "todo" | "done";
+      status: "todo" | "in-progress" | "done";
     }) => {
       const { data } = await api.patch(`/tasks/${id}/status`, { status });
       return data;
