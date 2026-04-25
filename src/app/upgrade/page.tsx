@@ -14,7 +14,7 @@ export default function UpgradePage() {
     setUpgrading(true);
     setError("");
     try {
-      const productId = "pdt_0NdRyp745XA5HyJZHmJ3s";
+      const productId = process.env.NEXT_PUBLIC_DODO_PRODUCT_ID;
       const { data } = await api.post("/checkouts", {
         productId,
         redirectUrl: window.location.origin + "/tasks",
