@@ -1,12 +1,13 @@
 "use client";
 
-import { useUserQuery } from "@/hooks/useUser";
-import { Loader2, Check, Zap } from "lucide-react";
+import { useUserQuery, useLogoutMutation } from "@/hooks/useUser";
+import { Loader2, Check, Zap, LogOut } from "lucide-react";
 import { useState } from "react";
 import api from "@/lib/axios";
 
 export default function UpgradePage() {
   const { isLoading: userLoading } = useUserQuery();
+  const logoutMutation = useLogoutMutation();
   const [upgrading, setUpgrading] = useState(false);
   const [error, setError] = useState("");
 
@@ -45,8 +46,19 @@ export default function UpgradePage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 py-20 px-4">
+    <div className="min-h-screen bg-zinc-50 py-12 px-4">
       <div className="max-w-4xl mx-auto">
+        <div className="flex justify-end mb-8">
+          <button
+            onClick={() => logoutMutation.mutate()}
+            disabled={logoutMutation.isPending}
+            className="flex items-center gap-2 text-sm font-medium text-zinc-500 hover:text-black transition-colors bg-white px-4 py-2 rounded-xl border border-zinc-200 shadow-sm hover:shadow-md active:scale-95 disabled:opacity-50"
+          >
+            <LogOut size={16} />
+            {logoutMutation.isPending ? "Logging out..." : "Logout"}
+          </button>
+        </div>
+
         <div className="text-center mb-16">
           <h1 className="text-4xl font-extrabold text-black tracking-tight mb-4">
             Level Up Your Workflow
@@ -140,3 +152,4 @@ export default function UpgradePage() {
     </div>
   );
 }
+
